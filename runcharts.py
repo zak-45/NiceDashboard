@@ -5,6 +5,12 @@ v : 1.0.0
 
 Select chart to run
 
+ex : runcharts devstats --dark
+
+if you copy runcharts to devstats, this can be run in this way :
+
+devstats --dark
+
 """
 import subprocess
 import sys

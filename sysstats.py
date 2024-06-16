@@ -5,6 +5,12 @@ v : 1.0.0
 
 System Utilization Chart
 
+ex : runcharts sysstats --dark
+
+if you copy runcharts to sysstats, this can be run in this way :
+
+sysstats --dark
+
 """
 import time
 from datetime import datetime

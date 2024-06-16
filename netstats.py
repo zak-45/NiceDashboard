@@ -5,6 +5,12 @@ v : 1.0.0
 
 Network Utilization Chart
 
+ex : runcharts netstats --dark
+
+if you copy runcharts to netstats, this can be run in this way :
+
+netstats --dark
+
 """
 
 import time
