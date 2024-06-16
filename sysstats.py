@@ -4,6 +4,8 @@ from datetime import datetime
 import psutil
 from nicegui import app, ui
 
+import argparse
+
 
 class SysCharts:
     """
@@ -84,7 +86,13 @@ class SysCharts:
         app.native.start_args['debug'] = False
         app.native.settings['ALLOW_DOWNLOADS'] = True
 
-        ui.run(native=True, window_size=(800, 600), fullscreen=False, reload=False)
+        ui.run(native=True,
+               window_size=(800, 600),
+               fullscreen=False,
+               reload=False,
+               title='System Stats',
+               favicon='favicon.ico'
+               )
 
     def create_charts(self):
         self.cpu_chart = ui.echart({
@@ -309,4 +317,13 @@ class SysCharts:
 
 
 if __name__ == "__main__":
-    SysCharts()
+
+    parser = argparse.ArgumentParser(description='Display System utilization chart...')
+
+    parser.add_argument('--dark',
+                        action='store_true',
+                        help='Activate dark mode '
+                        )
+
+    args = parser.parse_args()
+    SysCharts(dark=args.dark)

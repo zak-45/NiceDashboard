@@ -1,8 +1,9 @@
 # run chart on its own process
 import subprocess
 import sys
+import argparse
 
-dark_mode = False
+dark_mode = ''
 
 
 def select_exe():
@@ -16,22 +17,50 @@ def select_exe():
         return './runcharts.exe'
 
 
-subprocess.Popen(["devstats", str(dark_mode)],
-                 executable=select_exe(),
-                 stdout=subprocess.PIPE,
-                 stderr=subprocess.PIPE,
-                 text=True)
+if __name__ == '__main__':
 
+    parser = argparse.ArgumentParser(description='Display charts...')
+    parser.add_argument('chart_name',
+                        choices=['devstats', 'netstats', 'sysstats'],
+                        metavar='chart',
+                        type=str,
+                        nargs='+',
+                        help='Select a chart to display')
 
-subprocess.Popen(["netstats", str(dark_mode)],
-                 executable=select_exe(),
-                 stdout=subprocess.PIPE,
-                 stderr=subprocess.PIPE,
-                 text=True)
+    parser.add_argument('--dev_ip',
+                        required=False,
+                        type=str,
+                        help='List of IP addresses separated by comma : ip,ip2,ip3...')
 
+    parser.add_argument('--dark',
+                        action='store_true',
+                        help='Activate dark mode '
+                        )
 
-subprocess.Popen(["sysstats", str(dark_mode)],
-                 executable=select_exe(),
-                 stdout=subprocess.PIPE,
-                 stderr=subprocess.PIPE,
-                 text=True)
+    args = parser.parse_args()
+
+    if args.dark is True:
+        dark_mode = ['--dark']
+    else:
+        dark_mode = []
+
+    ips = []
+    ip_list = []
+    if args.dev_ip is not None:
+        ips = ['--dev_ip']
+        ip_list = [args.dev_ip]
+
+    if 'devstats' in args.chart_name:
+        subprocess.Popen(["devstats"] + ips + ip_list + dark_mode,
+                         executable=select_exe(),
+                         text=True)
+
+    if 'netstats' in args.chart_name:
+        subprocess.Popen(["netstats"] + dark_mode,
+                         executable=select_exe(),
+                         text=True)
+
+    if 'sysstats' in args.chart_name:
+        subprocess.Popen(["sysstats"] + dark_mode,
+                         executable=select_exe(),
+                         text=True)

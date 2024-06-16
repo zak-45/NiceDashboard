@@ -32,6 +32,8 @@ import requests
 from nicegui import app, ui
 from ping3 import ping
 
+import argparse
+
 
 class DevCharts:
     """
@@ -94,7 +96,13 @@ class DevCharts:
         app.native.start_args['debug'] = False
         app.native.settings['ALLOW_DOWNLOADS'] = True
 
-        ui.run(native=True, window_size=(800, 600), fullscreen=False, reload=False)
+        ui.run(native=True,
+               window_size=(800, 600),
+               fullscreen=False,
+               reload=False,
+               title='Device Stats',
+               favicon='favicon.ico'
+               )
 
     def create_charts(self):
         self.multi_ping = ui.echart(
@@ -305,4 +313,20 @@ class DevCharts:
 
 
 if __name__ == "__main__":
-    DevCharts()
+    parser = argparse.ArgumentParser(description='Display Device(s) utilization chart...')
+
+    parser.add_argument('--dev_ip',
+                        required=False,
+                        type=str,
+                        help='List of IP addresses separated by comma : ip,ip2,ip3...')
+
+    parser.add_argument('--dark',
+                        action='store_true',
+                        help='Activate dark mode '
+                        )
+
+    args = parser.parse_args()
+    ips = None
+    if args.dev_ip is not None:
+        ips = args.dev_ip
+    DevCharts(dev_ips=ips, dark=args.dark)
