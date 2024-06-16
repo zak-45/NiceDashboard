@@ -32,6 +32,10 @@ def select_exe():
 
 
 if __name__ == '__main__':
+    # packaging support (compile)
+    from multiprocessing import freeze_support  # noqa
+
+    freeze_support()  # noqa
 
     parser = argparse.ArgumentParser(description='Display charts...')
     parser.add_argument('chart_name',
