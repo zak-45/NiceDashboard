@@ -14,10 +14,8 @@ devstats --dark
 """
 import subprocess
 import sys
+import os
 import argparse
-
-
-dark_mode = ''
 
 
 def select_exe():
@@ -31,11 +29,52 @@ def select_exe():
         return './runcharts.exe'
 
 
+def copy_exe():
+    if sys.platform == 'linux':
+        os.rename('./runcharts/runcharts-Linux.bin', './runcharts/runcharts.bin')
+
+    elif sys.platform == 'darwin':
+        os.rename('./runcharts/runcharts-macOS.app', './runcharts/runcharts.app')
+
+    else:
+        os.rename('./runcharts/runcharts-Windows.exe', './runcharts/runcharts.exe')
+
+
 if __name__ == '__main__':
     # packaging support (compile)
     from multiprocessing import freeze_support  # noqa
 
     freeze_support()  # noqa
+
+    # test to see if executed from compiled version
+    # instruct user to go to WLEDVideoSync folder to execute program
+    if "NUITKA_ONEFILE_PARENT" in os.environ:
+        import FreeSimpleGUI as sg  # Part 1 - The import
+
+        # Define the window's contents
+        info = ("Extracting executable to WLEDVideoSync folder.....\n\n \
+        You can safely delete this file after extraction finished to save some space.\n \
+        -\n\n \
+        Go to runcharts folder and run runcharts (exe / bin / app) file\n \
+        This is a portable version, nothing installed on your system and can be moved where wanted.\n\n \
+        -------------------------------------------------------------------------------------------------\n \
+        THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,\n \
+        INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n \
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\n \
+        IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n \
+        DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n \
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n \
+        -------------------------------------------------------------------------------------------------\n ")
+        layout = [[sg.Text(info)],  # Part 2 - The Layout
+                  [sg.Button('Ok')]]
+        # Create the window
+        window = sg.Window('RunCharts', layout)  # Part 3 - Window Definition
+        # Display and interact with the Window
+        event, values = window.read()  # Part 4 - Event loop or Window.read call
+        # Finish up by removing from the screen
+        window.close()  # Part 5 - Close the Window
+        copy_exe()  # copy exe file
+        sys.exit()
 
     parser = argparse.ArgumentParser(description='Display charts...')
     parser.add_argument('chart_name',
