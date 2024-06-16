@@ -1,0 +1,4 @@
+requests~=2.32.3
+nicegui~=1.4.27
+ping3~=4.0.8
+psutil~=5.9.8

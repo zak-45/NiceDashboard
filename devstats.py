@@ -27,8 +27,9 @@ return_code = proc.wait()
 """
 import time
 from datetime import datetime
+
+import requests
 from nicegui import app, ui
-from utils import CASTUtils as Utils
 from ping3 import ping
 
 
@@ -122,7 +123,7 @@ class DevCharts:
 
         with ui.row():
             for cast_ip in self.ips:
-                wled_data = Utils.get_wled_info(cast_ip)
+                wled_data = self.get_wled_info(cast_ip)
                 ip_exp = ui.expansion(cast_ip, icon='cast') \
                     .classes('shadow-[0px_1px_4px_0px_rgba(0,0,0,0.5)_inset]')
 
@@ -245,7 +246,7 @@ class DevCharts:
         now = datetime.now()
         date_time_str = now.strftime("%H:%M:%S")
 
-        wled_data = Utils.get_wled_info(cast_ip)
+        wled_data = self.get_wled_info(cast_ip)
 
         if wled_data == {}:
             self.log.push(datetime.now().strftime('%H:%M:%S') + " no data from " + cast_ip)
@@ -283,6 +284,24 @@ class DevCharts:
             i += 1
 
         self.multi_signal.update()
+
+    @staticmethod
+    def get_wled_info(host, timeout: int = 1):
+        """
+        Take matrix information from WLED device
+        :param host:
+        :param timeout:
+        :return:
+        """
+        try:
+            url = f'http://{host}/json/info'
+            result = requests.get(url, timeout=timeout)
+            result = result.json()
+        except Exception as error:
+            print(f'Not able to get WLED info : {error}')
+            result = {}
+
+        return result
 
 
 if __name__ == "__main__":
