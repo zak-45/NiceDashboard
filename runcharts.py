@@ -15,6 +15,8 @@ devstats --dark
 import subprocess
 import sys
 import argparse
+import imageio
+
 
 dark_mode = ''
 
