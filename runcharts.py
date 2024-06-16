@@ -1,4 +1,11 @@
-# run chart on its own process
+"""
+a: zak-45
+d : 16/06/2024
+v : 1.0.0
+
+Select chart to run
+
+"""
 import subprocess
 import sys
 import argparse

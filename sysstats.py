@@ -1,4 +1,11 @@
-#!/usr/bin/env python3
+"""
+a: zak-45
+d : 16/06/2024
+v : 1.0.0
+
+System Utilization Chart
+
+"""
 import time
 from datetime import datetime
 import psutil

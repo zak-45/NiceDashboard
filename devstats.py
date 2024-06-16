@@ -1,25 +1,12 @@
 """
+a: zak-45
+d : 16/06/2024
+v : 1.0.0
+
+Devices Chart including WLED specifics ones
+
 Compiling via
 python -m nuitka --main=test1.py --main=test2.py --standalone produces a single binary: ./test1.dist/test1.bin
-
-Executing test1.bin runs the test1.py entry point:
-
-hi
-
-Execute the other entry point (test2.py) by renaming the executable to match name of the other entry point
-(rename test1.bin -> test2.bin):
-
-hello
-
-You can also use Python to run a particular entry point.
-
-# Output is 'hi'
-subprocess.run("test1", executable="./test1.dist/test1.bin")
-
-# Output is 'hello'
-subprocess.run("test2", executable="./test1.dist/test1.bin")
-
-More generally, Nuitka picks the entry point depending on the value of sys.argv[0].
 
 proc = subprocess.Popen(cmd, shell=False,  executable="/bin/tcsh", stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 return_code = proc.wait()
