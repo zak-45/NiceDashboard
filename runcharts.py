@@ -16,6 +16,7 @@ import subprocess
 import sys
 import os
 import argparse
+import time
 
 
 def select_exe():
@@ -47,7 +48,7 @@ if __name__ == '__main__':
     freeze_support()  # noqa
 
     # test to see if executed from compiled version
-    # instruct user to go to WLEDVideoSync folder to execute program
+    # instruct user to go to runcharts folder to execute program
     if "NUITKA_ONEFILE_PARENT" in os.environ:
         import FreeSimpleGUI as sg  # Part 1 - The import
 
@@ -74,6 +75,7 @@ if __name__ == '__main__':
         # Finish up by removing from the screen
         window.close()  # Part 5 - Close the Window
         copy_exe()  # copy exe file
+        time.sleep(1)
         sys.exit()
 
     parser = argparse.ArgumentParser(description='Display charts...')
