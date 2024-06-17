@@ -12,7 +12,8 @@ if you copy runcharts to netstats, this can be run in this way :
 netstats --dark
 
 """
-
+import sys
+import os
 import time
 from datetime import datetime
 import psutil
@@ -66,7 +67,7 @@ class NetCharts:
                fullscreen=False,
                reload=False,
                title='Network Utilization',
-               favicon='favicon.ico'
+               favicon=os.path.dirname(sys.argv[0])+'/favicon.ico'
                )
 
     def create_charts(self):

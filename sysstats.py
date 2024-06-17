@@ -13,6 +13,8 @@ sysstats --dark
 
 """
 import time
+import sys
+import os
 from datetime import datetime
 import psutil
 from nicegui import app, ui
@@ -107,7 +109,7 @@ class SysCharts:
                fullscreen=False,
                reload=False,
                title='System Stats',
-               favicon='favicon.ico'
+               favicon=os.path.dirname(sys.argv[0])+'/favicon.ico'
                )
 
     def create_charts(self):

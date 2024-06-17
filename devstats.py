@@ -14,6 +14,8 @@ return_code = proc.wait()
 """
 import time
 from datetime import datetime
+import sys
+import os
 
 import requests
 from nicegui import app, ui
@@ -88,7 +90,7 @@ class DevCharts:
                fullscreen=False,
                reload=False,
                title='Device Stats',
-               favicon='favicon.ico'
+               favicon=os.path.dirname(sys.argv[0])+'/favicon.ico'
                )
 
     def create_charts(self):
