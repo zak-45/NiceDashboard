@@ -79,7 +79,6 @@ jobs:
           output-file: runcharts-${{runner.os}}
           include-module: |
             pygments.formatters.html
-            gi
 
           include-data-dir: |
             nicegui=nicegui
