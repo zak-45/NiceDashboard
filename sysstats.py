@@ -25,6 +25,9 @@ class SysCharts:
     Create charts from system datas
     CPU, RAM, ...
     """
+    cpu_warning: int = 60
+    memory_warning: int = 85
+    free_warning: int = 10
 
     def __init__(self, dark: bool = False):
         self.cpu_chart = None
@@ -290,9 +293,13 @@ class SysCharts:
         date_time_str = now.strftime("%H:%M:%S")
         load = self.get_load_averages()
 
-        self.memory_chart.options['series'][0]['data'].append(self.get_memory())
-        self.disk_chart.options['series'][0]['data'][0]['value'] = round(self.get_disk(), 2)
-        self.disk_chart.options['series'][0]['data'][1]['value'] = round(100 - self.get_disk(), 2)
+        memory_data = self.get_memory()
+        disk_free_data = round(100 - self.get_disk(), 2)
+        disk_used_data = round(self.get_disk(), 2)
+
+        self.memory_chart.options['series'][0]['data'].append(memory_data)
+        self.disk_chart.options['series'][0]['data'][0]['value'] = disk_used_data
+        self.disk_chart.options['series'][0]['data'][1]['value'] = disk_free_data
         self.gauge_data[0]['value'] = round(load['one_min'], 2)
         self.gauge_data[1]['value'] = round(load['five_min'], 2)
         self.gauge_data[2]['value'] = round(load['fifteen_min'], 2)
@@ -300,12 +307,25 @@ class SysCharts:
 
         self.memory_chart.options['xAxis']['data'].append(date_time_str)
 
+        if memory_data >= SysCharts.memory_warning:
+            if self.notify.value is True:
+                ui.notify('High memory utilization', type='negative')
+        if disk_free_data <= SysCharts.free_warning:
+            if self.notify.value is True:
+                ui.notify('High disk utilization', type='negative')
+
     async def cpu_datas(self):
         now = datetime.now()
         date_time_str = now.strftime("%H:%M:%S")
 
-        self.cpu_chart.options['series'][0]['data'].append(self.get_cpu())
+        cpu_data = self.get_cpu()
+
+        self.cpu_chart.options['series'][0]['data'].append(cpu_data)
         self.cpu_chart.options['xAxis']['data'].append(date_time_str)
+
+        if cpu_data >= SysCharts.cpu_warning:
+            if self.notify.value is True:
+                ui.notify('High CPU utilization', type='negative')
 
     @staticmethod
     def get_cpu():
