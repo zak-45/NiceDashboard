@@ -74,7 +74,7 @@ jobs:
           macos-app-icon: favicon.ico
           macos-create-app-bundle: true
           onefile: true
-          onefile-tempdir-spec: ./runcharts
+          onefile-tempdir-spec: ./NiceDashboard
           output-file: runcharts-${{runner.os}}
           include-module: |
             pygments.formatters.html

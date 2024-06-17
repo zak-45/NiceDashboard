@@ -20,25 +20,19 @@ import time
 
 
 def select_exe():
-    if sys.platform == 'linux':
-        return './runcharts.bin'
-
-    elif sys.platform == 'darwin':
-        return './runcharts.app'
-
-    else:
-        return './runcharts.exe'
+    """ Absolute path of running script """
+    return os.path.abspath(sys.argv[0])
 
 
 def copy_exe():
     if sys.platform == 'linux':
-        os.rename('./runcharts/runcharts-Linux.bin', './runcharts/runcharts.bin')
+        os.rename('./NiceDashboard/runcharts-Linux.bin', './NiceDashboard/runcharts.bin')
 
     elif sys.platform == 'darwin':
-        os.rename('./runcharts/runcharts-macOS.app', './runcharts/runcharts.app')
+        os.rename('./NiceDashboard/runcharts-macOS.app', './NiceDashboard/runcharts.app')
 
     else:
-        os.rename('./runcharts/runcharts-Windows.exe', './runcharts/runcharts.exe')
+        os.rename('./NiceDashboard/runcharts-Windows.exe', './NiceDashboard/runcharts.exe')
 
 
 if __name__ == '__main__':
@@ -53,10 +47,10 @@ if __name__ == '__main__':
         import FreeSimpleGUI as sg  # Part 1 - The import
 
         # Define the window's contents
-        info = ("Extracting executable to WLEDVideoSync folder.....\n\n \
+        info = ("Extracting executable to NiceDashboard folder.....\n\n \
         You can safely delete this file after extraction finished to save some space.\n \
         -\n\n \
-        Go to runcharts folder and run runcharts (exe / bin / app) file\n \
+        Go to NiceDashboard folder and run runcharts (exe / bin / app) file\n \
         This is a portable version, nothing installed on your system and can be moved where wanted.\n\n \
         -------------------------------------------------------------------------------------------------\n \
         THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,\n \
@@ -80,7 +74,6 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Display charts...')
     parser.add_argument('chart_name',
-                        choices=['devstats', 'netstats', 'sysstats'],
                         metavar='chart',
                         type=str,
                         nargs='+',
