@@ -90,7 +90,7 @@ class DevCharts:
                fullscreen=False,
                reload=False,
                title='Device Stats',
-               favicon=os.path.dirname(sys.argv[0])+'/favicon.ico'
+               favicon='favicon.ico'
                )
 
     def create_charts(self):

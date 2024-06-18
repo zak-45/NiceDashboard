@@ -109,7 +109,7 @@ class SysCharts:
                fullscreen=False,
                reload=False,
                title='System Stats',
-               favicon=os.path.dirname(sys.argv[0])+'/favicon.ico'
+               favicon='favicon.ico'
                )
 
     def create_charts(self):
