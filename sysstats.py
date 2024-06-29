@@ -84,7 +84,7 @@ class SysCharts:
             self.notify = ui.switch('Notification')
             self.notify.value = True
             self.dark_switch = ui.switch('Dark Mode')
-            self.dark_mode = ui.dark_mode()
+            self.dark_mode = ui.dark_mode(on_change=self.change_chart_mode)
             if dark is True:
                 self.dark_switch.value = True
 
@@ -114,6 +114,7 @@ class SysCharts:
 
     def create_charts(self):
         self.cpu_chart = ui.echart({
+            'darkMode': 'false',
             'legend': {
                 'show': 'true',
                 'data': []
@@ -168,6 +169,7 @@ class SysCharts:
         with ui.row().classes('w-full no-wrap'):
             with ui.card().classes('w-1/2'):
                 self.disk_chart = ui.echart({
+                    'darkMode': 'false',
                     'title': {
                         'text': "Disk Space Utilization",
                         'left': 'center'
@@ -350,9 +352,15 @@ class SysCharts:
         disk = psutil.disk_usage('/')
         return disk[3]
 
+    def change_chart_mode(self):
+        """toggle dark mode on chart"""
+        self.cpu_chart.options.update({'darkMode': not self.cpu_chart.options['darkMode']})
+        self.disk_chart.options.update({'darkMode': not self.cpu_chart.options['darkMode']})
+        self.cpu_chart.update()  # render on client
+        self.disk_chart.update()  # render on client
+
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser(description='Display System utilization chart...')
 
     parser.add_argument('--dark',

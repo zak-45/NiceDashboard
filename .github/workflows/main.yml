@@ -77,12 +77,9 @@ jobs:
           onefile: true
           onefile-tempdir-spec: ./NiceDashboard
           output-file: runcharts-${{runner.os}}
+          include-package-data: nicegui
           include-module: |
             pygments.formatters.html
-
-          include-data-dir: |
-            nicegui=nicegui
-
           include-data-files: |
             favicon.ico=favicon.ico
 
