@@ -1,3 +1,12 @@
+# Compilation mode, standalone everywhere, except on macOS there app bundle
+# nuitka-project-if: {OS} in ("Windows", "Linux", "FreeBSD"):
+#    nuitka-project: --onefile
+# nuitka-project-if: {OS} == "Darwin":
+#    nuitka-project: --standalone
+#    nuitka-project: --macos-create-app-bundle
+# nuitka-project-if: {OS} == "Windows":
+#    nuitka-project: --onefile-windows-splash-screen-image={MAIN_DIRECTORY}/splash-screen.png
+
 """
 a: zak-45
 d : 16/06/2024
@@ -47,7 +56,7 @@ if __name__ == '__main__':
         import FreeSimpleGUI as sg  # Part 1 - The import
 
         # Define the window's contents
-        info = ("Extracting executable to NiceDashboard folder.....\n\n \
+        info = ("Extracted executable to NiceDashboard folder.....\n\n \
         You can safely delete this file after extraction finished to save some space.\n \
         -\n\n \
         Go to NiceDashboard folder and run runcharts (exe / bin / app) file\n \
