@@ -111,6 +111,7 @@ jobs:
             pygments.formatters.html
           include-data-files: |
             favicon.ico=favicon.ico
+            custom_folder.png=custom_folder.png            
 
       #  Use tar to preserve attribute
       - name: MacOS prepare app from Nuitka
@@ -118,7 +119,7 @@ jobs:
         run: |
           chmod +x build/runcharts.app/Contents/MacOS/runcharts-${{ runner.os }}_${{ env.ARCHITECTURE }}**
           mkdir runcharts
-          fileicon set runcharts build/runcharts.app/Contents/MacOS/assets/custom_folder.png
+          fileicon set runcharts build/runcharts.app/Contents/MacOS/custom_folder.png
           mv build/runcharts.app runcharts/runcharts-${{ runner.os }}_${{ env.ARCHITECTURE }}.app                    
           tar cp runcharts | gzip --best > runcharts-${{runner.os}}_${{ env.ARCHITECTURE }}.tar.gz
           
