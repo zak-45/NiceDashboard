@@ -29,7 +29,6 @@ jobs:
         os: [macos-13, macos-latest, ubuntu-latest, windows-latest]
         
     runs-on: ${{matrix.os}}
-   
     steps:
       - uses: kenchan0130/actions-system-info@master
         id: system-info
