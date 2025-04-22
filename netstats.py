@@ -12,8 +12,11 @@ if you copy runcharts to netstats, this can be run in this way :
 netstats --dark
 
 """
-import sys
+
 import os
+# disable not used costly import (from nicegui)
+os.environ['MATPLOTLIB'] = 'false'
+
 import time
 from datetime import datetime
 import psutil
@@ -52,6 +55,7 @@ class NetCharts:
         with ui.row():
             ui.button('Clear all', on_click=self.clear)
             ui.button('Pause 5s', on_click=self.pause_chart)
+            ui.button('STOP', on_click=app.stop)
         self.log.push("Auto refresh time: " + str(self.chart_refresh_s) + "sec")
 
         """ timers """

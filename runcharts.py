@@ -1,9 +1,7 @@
-# Compilation mode, standalone everywhere, except on macOS there app bundle
-# nuitka-project-if: {OS} in ("Windows", "Linux", "FreeBSD"):
-#    nuitka-project: --onefile
-# nuitka-project-if: {OS} == "Darwin":
-#    nuitka-project: --standalone
-#    nuitka-project: --macos-create-app-bundle
+# Compilation mode, standalone everywhere
+# nuitka-project: --nofollow-import-to=doctest
+# nuitka-project: --nofollow-import-to=matplotlib
+# nuitka-project: --noinclude-default-mode=error
 # nuitka-project-if: {OS} == "Windows":
 #    nuitka-project: --onefile-windows-splash-screen-image={MAIN_DIRECTORY}/splash-screen.png
 
@@ -25,7 +23,10 @@ import subprocess
 import sys
 import os
 import argparse
-import time
+import tkinter as tk
+
+# disable not used costly import (from nicegui)
+os.environ['MATPLOTLIB'] = 'false'
 
 
 def select_exe():
@@ -53,13 +54,22 @@ if __name__ == '__main__':
     # test to see if executed from compiled version
     # instruct user to go to runcharts folder to execute program
     if "NUITKA_ONEFILE_PARENT" in os.environ:
-        import FreeSimpleGUI as sg  # Part 1 - The import
+
+        def on_ok_click():
+            # Close the window when OK button is clicked
+            root.destroy()
+
+        copy_exe()  # copy exe file
+
+        # Create the main window
+        root = tk.Tk()
+        root.title("WLEDVideoSync Information")
+        root.geometry("800x460")  # Set the size of the window
+        root.configure(bg='#657B83')  # Set the background color
 
         # Define the window's contents
-        info = ("Extracted executable to NiceDashboard folder.....\n\n \
+        info_text = ("Extracted executable to NiceDashboard folder.....\n\n \
         You can safely delete this file after extraction finished to save some space.\n \
-        -\n\n \
-        Go to NiceDashboard folder and run runcharts (exe / bin / app) file\n \
         This is a portable version, nothing installed on your system and can be moved where wanted.\n\n \
         -------------------------------------------------------------------------------------------------\n \
         THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,\n \
@@ -69,16 +79,16 @@ if __name__ == '__main__':
         DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n \
         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n \
         -------------------------------------------------------------------------------------------------\n ")
-        layout = [[sg.Text(info)],  # Part 2 - The Layout
-                  [sg.Button('Ok')]]
-        # Create the window
-        window = sg.Window('RunCharts', layout)  # Part 3 - Window Definition
-        # Display and interact with the Window
-        event, values = window.read()  # Part 4 - Event loop or Window.read call
-        # Finish up by removing from the screen
-        window.close()  # Part 5 - Close the Window
-        copy_exe()  # copy exe file
-        time.sleep(1)
+
+        info_label = tk.Label(root, text=info_text, bg='#657B83', fg='white', justify=tk.LEFT)
+        info_label.pack(padx=10, pady=10)
+
+        # Create the OK button
+        ok_button = tk.Button(root, text="Ok", command=on_ok_click, bg='gray', fg='white')
+        ok_button.pack(pady=10)
+
+        # Start the Tkinter event loop
+        root.mainloop()
         sys.exit()
 
     parser = argparse.ArgumentParser(description='Display charts...')

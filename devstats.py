@@ -14,8 +14,10 @@ return_code = proc.wait()
 """
 import time
 from datetime import datetime
-import sys
 import os
+# disable not used costly import (from nicegui)
+os.environ['MATPLOTLIB'] = 'false'
+
 
 import requests
 from nicegui import app, ui
@@ -78,6 +80,7 @@ class DevCharts:
         with ui.row():
             ui.button('Clear all', on_click=self.clear)
             ui.button('Pause 5s', on_click=self.pause_chart)
+            ui.button('STOP', on_click=app.stop)
         self.log.push("Auto refresh time: " + str(self.chart_refresh_s) + "sec")
         self.log.push("Auto wled refresh time: " + str(self.wled_chart_refresh_s) + "sec")
 

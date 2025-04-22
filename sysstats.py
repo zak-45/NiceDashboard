@@ -13,8 +13,10 @@ sysstats --dark
 
 """
 import time
-import sys
 import os
+# disable not used costly import (from nicegui)
+os.environ['MATPLOTLIB'] = 'false'
+
 from datetime import datetime
 import psutil
 from nicegui import app, ui
@@ -93,6 +95,7 @@ class SysCharts:
         with ui.row():
             ui.button('Clear all', on_click=self.clear)
             ui.button('Pause 5s', on_click=self.pause_chart)
+            ui.button('STOP', on_click=app.stop)
         self.log.push("Auto refresh time: " + str(self.chart_refresh_s) + "sec")
 
         """ timers """

@@ -4,4 +4,3 @@ ping3~=4.0.8
 psutil~=7.0.0
 pywebview[qt]==5.4
 imageio
-FreeSimpleGUI~=5.1.0
