@@ -26,24 +26,53 @@ jobs:
       contents: write
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-13, macos-latest, ubuntu-latest, windows-latest]
         
     runs-on: ${{matrix.os}}
    
     steps:
+      - uses: kenchan0130/actions-system-info@master
+        id: system-info
+
+      - name: Get current time
+        uses: josStorer/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYYMMDD-HH
+          utcOffset: "+02:00"
+
       - name: Check-out repository
         uses: actions/checkout@v3
+
+
+      - name: Windows specific
+        if: matrix.os == 'windows-latest'
+        run: |
+          echo "ARCHITECTURE=x86_64" >> $env:GITHUB_ENV
 
       - name: Ubuntu specific
         if: matrix.os == 'ubuntu-latest'
         run: |
+          ARCHITECTURE=$(uname -m)
+          echo "ARCHITECTURE=$ARCHITECTURE" >> $GITHUB_ENV
           sudo apt-get update
           sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-webkit2-4.1
 
-      - name: MacOS specific
+      - name: MacOS specific MX
         if: matrix.os == 'macos-latest'
         run: |
           brew update
+          brew upgrade
+          ARCHITECTURE=$(uname -m)
+          echo "ARCHITECTURE=$ARCHITECTURE" >> $GITHUB_ENV
+
+      - name: MacOS specific x86
+        if: matrix.os == 'macos-13'
+        run: |
+          brew update
+          brew upgrade
+          ARCHITECTURE=$(uname -m)
+          echo "ARCHITECTURE=$ARCHITECTURE" >> $GITHUB_ENV
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -74,26 +103,40 @@ jobs:
           windows-icon-from-ico: favicon.ico
           macos-app-icon: favicon.ico
           macos-create-app-bundle: true
-          onefile: true
+          mode: app
           onefile-tempdir-spec: ./NiceDashboard
-          output-file: runcharts-${{runner.os}}
+          output-file: runcharts-${{runner.os}}_${{ env.ARCHITECTURE }}
           include-package-data: nicegui
           include-module: |
             pygments.formatters.html
           include-data-files: |
             favicon.ico=favicon.ico
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{runner.os}} Build
-          if-no-files-found: warn
-          path: 'build/runcharts-${{runner.os}}**'
-            
+      #  Use tar to preserve attribute
+      - name: MacOS prepare app from Nuitka
+        if: matrix.os == 'macos-13' || matrix.os == 'macos-latest'
+        run: |
+          chmod +x build/runcharts.app/Contents/MacOS/runcharts-${{ runner.os }}_${{ env.ARCHITECTURE }}**
+          mkdir runcharts
+          fileicon set runcharts build/runcharts.app/Contents/MacOS/assets/custom_folder.png
+          mv build/runcharts.app runcharts/runcharts-${{ runner.os }}_${{ env.ARCHITECTURE }}.app                    
+          tar cp runcharts | gzip --best > runcharts-${{runner.os}}_${{ env.ARCHITECTURE }}.tar.gz
+          
+
       - name: Create Release ${{github.event.inputs.mytag}} with Builds from Nuitka
+        if: matrix.os == 'windows-latest' || matrix.os == 'ubuntu-latest'
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
           commit: main
           tag: ${{github.event.inputs.mytag}}
-          artifacts: 'build/runcharts-${{runner.os}}**'
+          artifacts: 'build/runcharts-${{runner.os}}_${{ env.ARCHITECTURE }}**'
+
+      - name: Create Release ${{github.event.inputs.mytag}} with Builds from Nuitka for MacOS
+        if: matrix.os == 'macos-13' || matrix.os == 'macos-latest'
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          commit: main
+          tag: ${{github.event.inputs.mytag}}
+          artifacts: 'runcharts-${{runner.os}}_${{ env.ARCHITECTURE }}.tar.gz'
