@@ -1,7 +1,7 @@
 requests~=2.32.3
-nicegui~=1.4.28
+nicegui~=2.15.0
 ping3~=4.0.8
-psutil~=5.9.8
-pywebview[qt]==5.1
+psutil~=7.0.0
+pywebview[qt]==5.4
 imageio
 FreeSimpleGUI~=5.1.0
