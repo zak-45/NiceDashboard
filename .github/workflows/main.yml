@@ -62,6 +62,7 @@ jobs:
         run: |
           brew update
           brew upgrade
+          brew install fileicon
           ARCHITECTURE=$(uname -m)
           echo "ARCHITECTURE=$ARCHITECTURE" >> $GITHUB_ENV
 
@@ -70,6 +71,7 @@ jobs:
         run: |
           brew update
           brew upgrade
+          brew install fileicon
           ARCHITECTURE=$(uname -m)
           echo "ARCHITECTURE=$ARCHITECTURE" >> $GITHUB_ENV
 
