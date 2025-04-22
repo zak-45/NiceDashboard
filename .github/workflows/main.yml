@@ -111,7 +111,7 @@ jobs:
             pygments.formatters.html
           include-data-files: |
             favicon.ico=favicon.ico
-            custom_folder.png=custom_folder.png            
+            custom_folder.png=custom_folder.png
 
       #  Use tar to preserve attribute
       - name: MacOS prepare app from Nuitka
