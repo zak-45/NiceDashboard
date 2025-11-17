@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A dashboard built with [NiceGUI](https://nicegui.io/) to visualize real-time data and statistics from [WLEDVideoSync](https://github.com/dev-suda/WLED-Video-Sync).
+A dashboard built with [NiceGUI](https://nicegui.io/) to visualize real-time data and statistics from [WLEDVideoSync](https://github.com/zak-45/WLEDVideoSync).
 
 ## ✨ Features
 
