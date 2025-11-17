@@ -1,6 +1,6 @@
-requests~=2.32.3
-nicegui~=2.15.0
-ping3~=4.0.8
-psutil~=7.0.0
-pywebview[qt]==5.4
+requests
+nicegui
+ping3
+psutil
+pywebview[qt]
 imageio
