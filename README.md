@@ -67,8 +67,37 @@ Follow these instructions to get a local copy up and running.
 
 Once the dependencies are installed, you can run the dashboard:
 
+*   To start the main launcher menu:
+    ```sh
+    python runcharts.py
+    ```
+
+The application will be available at `http://localhost:8080` (or another open port) in your web browser.
+
+### Advanced Usage (Command-Line)
+
+The `runcharts.py` script provides several command-line arguments for more advanced control, such as launching a specific chart directly.
+
+*   **Launch a specific chart directly:**
+    ```sh
+    # Launch only the System Stats chart
+    python runcharts.py --sysstats
+
+    # Launch only the Network Stats chart
+    python runcharts.py --netstats
+
+    # Launch only the Device Stats chart with a specific device list
+    python runcharts.py --devstats --dev_list "192.168.1.10,192.168.1.11"
+    ```
+
+*   **Other available options:**
+    -   `--dark`: Launches the UI in dark mode.
+    -   `--native`: Runs the dashboard in a native desktop window (requires `pywebview`).
+    -   `--file <PATH>`: Specifies the path to the inter-process communication file.
+    -   `-h`, `--help`: Shows the full list of available commands.
+
 ```sh
-python main.py
+python runcharts.py --sysstats --dark --native
 ```
 
 The application will be available at `http://localhost:8080` in your web browser.
